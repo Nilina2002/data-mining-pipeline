@@ -63,4 +63,4 @@ venv.bak/
 
 # Project specific
 *.log
-data/raw/online_retail.csv
+
