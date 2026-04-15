@@ -1,0 +1,38 @@
+Country,Continent,RegionKey
+United Kingdom,Europe,1
+France,Europe,2
+Australia,Oceania,3
+Netherlands,Europe,4
+Germany,Europe,5
+Norway,Europe,6
+EIRE,Europe,7
+Switzerland,Europe,8
+Spain,Europe,9
+Poland,Europe,10
+Portugal,Europe,11
+Italy,Europe,12
+Belgium,Europe,13
+Lithuania,Europe,14
+Japan,Asia,15
+Iceland,Europe,16
+Channel Islands,Europe,17
+Denmark,Europe,18
+Cyprus,Europe,19
+Sweden,Europe,20
+Finland,Europe,21
+Austria,Europe,22
+Greece,Europe,23
+Singapore,Asia,24
+Lebanon,Asia,25
+United Arab Emirates,Asia,26
+Israel,Asia,27
+Saudi Arabia,Asia,28
+Czech Republic,Europe,29
+Canada,North America,30
+Unspecified,Unknown,31
+Brazil,South America,32
+USA,North America,33
+European Community,Europe,34
+Bahrain,Asia,35
+Malta,Europe,36
+RSA,Africa,37
