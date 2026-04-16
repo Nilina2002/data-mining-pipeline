@@ -1,29 +1,11 @@
-# 05_clustering.py
-# PURPOSE : Segment customers into distinct groups using K-Means clustering
-#           applied to RFM (Recency, Frequency, Monetary) features.
-#
-# KDD CONTEXT: Clustering is UNSUPERVISED learning — we discover natural
-#              groupings in customer behaviour without predefined labels.
-#              RFM is the industry-standard framework for customer segmentation.
-#
-# RFM DEFINITIONS:
-#   Recency  (R) — How recently did the customer purchase? (days ago)
-#   Frequency(F) — How many orders have they placed?
-#   Monetary (M) — How much total revenue have they generated?
-#
-# OUTPUT:
-#   data/processed/customer_segments.csv
-#   outputs/figures/09_elbow_curve.png
-#   outputs/figures/10_cluster_3d.png
-#   outputs/figures/11_cluster_profiles.png
-#   outputs/figures/12_rfm_boxplots.png
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+# adding k-medoids 
+from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import silhouette_score
 from mpl_toolkits.mplot3d import Axes3D
 import warnings
@@ -157,25 +139,67 @@ print(f"   ✅ Customers per cluster:")
 print(rfm['Cluster'].value_counts().sort_index().to_string())
 
 # ════════════════════════════════════════════════════════════
-# SECTION 5 — LABEL CLUSTERS (BUSINESS INTERPRETATION)
+# SECTION 4B — FIT K-MEDOIDS MODEL (FOR COMPARISON)
 # ════════════════════════════════════════════════════════════
-# Analyse each cluster's mean RFM values to assign
-# a meaningful business label to each segment
+print("\n▶ Fitting K-Medoids model for comparison...")
+
+kmedoids = KMedoids(
+    n_clusters=best_k,
+    metric='manhattan',   # better for RFM
+    init='k-medoids++',
+    random_state=42
+)
+
+rfm['Cluster_KMedoids'] = kmedoids.fit_predict(rfm_scaled)
+
+print("   ✅ K-Medoids clustering complete")
+
+print("\n▶ Comparing K-Means vs K-Medoids...")
+
+# K-Means score
+kmeans_score = silhouette_score(rfm_scaled, rfm['Cluster'])
+
+# K-Medoids score
+kmedoids_score = silhouette_score(rfm_scaled, rfm['Cluster_KMedoids'])
+
+print(f"\n📊 Silhouette Scores:")
+print(f"   K-Means   : {kmeans_score:.4f}")
+print(f"   K-Medoids : {kmedoids_score:.4f}")
+
+print("\n📊 Cluster Distribution Comparison:")
+
+print("\nK-Means:")
+print(rfm['Cluster'].value_counts().sort_index())
+
+print("\nK-Medoids:")
+print(rfm['Cluster_KMedoids'].value_counts().sort_index())
+
+print("\n📊 K-Means Centers:")
+print(kmeans_final.cluster_centers_)
+
+print("\n📊 K-Medoids (actual data points):")
+print(kmedoids.medoid_indices_)
+
+# ════════════════════════════════════════════════════════════
+# SECTION 5 — LABEL CLUSTERS (BOTH K-MEANS & K-MEDOIDS)
 # ════════════════════════════════════════════════════════════
 print("\n▶ Analysing cluster profiles...")
 
-cluster_summary = rfm.groupby('Cluster').agg(
+# ─────────────────────────────────────────────
+# K-MEANS CLUSTER LABELING
+# ─────────────────────────────────────────────
+cluster_summary_kmeans = rfm.groupby('Cluster').agg(
     Count     = ('CustomerID', 'count'),
     Recency   = ('Recency',    'mean'),
     Frequency = ('Frequency',  'mean'),
     Monetary  = ('Monetary',   'mean')
 ).round(2)
 
-print("\n📋 CLUSTER PROFILES:")
-print(cluster_summary.to_string())
+print("\n📋 K-MEANS CLUSTER PROFILES:")
+print(cluster_summary_kmeans.to_string())
 
-# Auto-label clusters based on RFM values
-# Logic: Champions = low recency + high frequency + high monetary
+
+# Labeling logic (same for both)
 def label_cluster(row):
     r, f, m = row['Recency'], row['Frequency'], row['Monetary']
     if r < 30 and f > 5 and m > 1000:
@@ -189,13 +213,38 @@ def label_cluster(row):
     else:
         return 'Potential Loyalists'
 
-cluster_summary['Segment'] = cluster_summary.apply(label_cluster, axis=1)
-print("\n📋 CLUSTER LABELS:")
-print(cluster_summary[['Count','Segment']].to_string())
 
-# Map labels back to the customer dataframe
-label_map = cluster_summary['Segment'].to_dict()
-rfm['Segment'] = rfm['Cluster'].map(label_map)
+cluster_summary_kmeans['Segment'] = cluster_summary_kmeans.apply(label_cluster, axis=1)
+
+print("\n📋 K-MEANS CLUSTER LABELS:")
+print(cluster_summary_kmeans[['Count','Segment']].to_string())
+
+# Map back
+label_map_kmeans = cluster_summary_kmeans['Segment'].to_dict()
+rfm['Segment'] = rfm['Cluster'].map(label_map_kmeans)
+
+
+# ─────────────────────────────────────────────
+# K-MEDOIDS CLUSTER LABELING (🔥 IMPORTANT)
+# ─────────────────────────────────────────────
+cluster_summary_kmedoids = rfm.groupby('Cluster_KMedoids').agg(
+    Count     = ('CustomerID', 'count'),
+    Recency   = ('Recency',    'mean'),
+    Frequency = ('Frequency',  'mean'),
+    Monetary  = ('Monetary',   'mean')
+).round(2)
+
+print("\n📋 K-MEDOIDS CLUSTER PROFILES:")
+print(cluster_summary_kmedoids.to_string())
+
+cluster_summary_kmedoids['Segment'] = cluster_summary_kmedoids.apply(label_cluster, axis=1)
+
+print("\n📋 K-MEDOIDS CLUSTER LABELS:")
+print(cluster_summary_kmedoids[['Count','Segment']].to_string())
+
+# 🔥 THIS IS THE CRITICAL LINE YOU NEEDED
+label_map_kmedoids = cluster_summary_kmedoids['Segment'].to_dict()
+rfm['Segment_KMedoids'] = rfm['Cluster_KMedoids'].map(label_map_kmedoids)
 
 # ════════════════════════════════════════════════════════════
 # SECTION 6 — VISUALISATIONS
