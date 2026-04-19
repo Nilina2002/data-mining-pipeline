@@ -24,6 +24,10 @@ Transform raw e-commerce transaction data into a structured, analysis-ready ware
 - numpy
 - matplotlib
 - seaborn
+- FastAPI
+- scikit-learn
+- React
+- Vite
 
 ## Project Structure
 
@@ -51,6 +55,17 @@ dmdw_project/
 |       |-- 03_top_products.png
 |       |-- 04_orders_by_day.png
 |       `-- 05_price_distribution.png
+|-- api/
+|   `-- server.py
+|-- frontend/
+|   |-- index.html
+|   |-- package.json
+|   |-- vite.config.js
+|   `-- src/
+|       |-- App.jsx
+|       |-- main.jsx
+|       `-- styles.css
+|-- streamlit_app.py
 |-- verify.py
 `-- requirements.txt
 ```
@@ -73,16 +88,10 @@ py -m venv dmdw_env
 
 ### 2) Install dependencies
 
-`requirements.txt` is currently empty, so install the required libraries directly:
+Install the project dependencies from `requirements.txt`:
 
 ```powershell
-pip install pandas numpy matplotlib seaborn
-```
-
-Optionally, lock them:
-
-```powershell
-pip freeze > requirements.txt
+pip install -r requirements.txt
 ```
 
 ## How to Run
@@ -139,6 +148,28 @@ py notebooks/02_error_fix_fullDate.py
 ```
 
 Use this when your BI tool requires a fully continuous date table (no missing days).
+
+### 5) Run the prediction API
+
+```powershell
+uvicorn api.server:app --reload --port 8000
+```
+
+### 6) Run the React frontend
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The browser app calls the FastAPI service and uses the trained Random Forest model from `outputs/model/` to predict the customer segment from:
+
+- Recency
+- Frequency
+- Monetary
+
+If the model artifacts do not exist yet, run `notebooks/save_model.py` first.
 
 ## Star Schema Overview
 

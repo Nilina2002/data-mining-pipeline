@@ -1,0 +1,19 @@
+{
+  "recency_min": 1,
+  "recency_max": 369,
+  "frequency_min": 1,
+  "frequency_max": 30,
+  "monetary_min": 3.75,
+  "monetary_max": 19880.99570000001,
+  "classes": [
+    "Lost / Inactive",
+    "Loyal Customers",
+    "Potential Loyalists"
+  ],
+  "total_customers": 4338,
+  "segment_counts": {
+    "Potential Loyalists": 1876,
+    "Loyal Customers": 1481,
+    "Lost / Inactive": 981
+  }
+}
