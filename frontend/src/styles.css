@@ -1,42 +1,42 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500;700&display=swap");
 
 :root {
-  color-scheme: dark;
-  --bg: #090b12;
-  --panel: rgba(255, 255, 255, 0.04);
-  --panel-border: rgba(255, 255, 255, 0.08);
-  --text: #e7ebf2;
-  --muted: #8e95a5;
-  --line: rgba(255, 255, 255, 0.07);
+    color-scheme: dark;
+    --bg: #090b12;
+    --panel: rgba(255, 255, 255, 0.04);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text: #e7ebf2;
+    --muted: #8e95a5;
+    --line: rgba(255, 255, 255, 0.07);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  min-height: 100%;
+    min-height: 100%;
 }
 
 body {
-  margin: 0;
-  background:
-    radial-gradient(circle at top left, rgba(0, 200, 150, 0.14), transparent 30%),
-    radial-gradient(circle at top right, rgba(59, 158, 255, 0.14), transparent 28%),
-    linear-gradient(180deg, #0a0d14 0%, #090b12 100%);
-  color: var(--text);
-  font-family: "DM Sans", sans-serif;
+    margin: 0;
+    background:
+        radial-gradient(circle at top left, rgba(0, 200, 150, 0.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(59, 158, 255, 0.14), transparent 28%),
+        linear-gradient(180deg, #0a0d14 0%, #090b12 100%);
+    color: var(--text);
+    font-family: "DM Sans", sans-serif;
 }
 
 button,
 input,
 select,
 textarea {
-  font: inherit;
+    font: inherit;
 }
 
 a {
-  color: inherit;
+    color: inherit;
 }
