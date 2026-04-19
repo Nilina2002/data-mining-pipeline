@@ -120,7 +120,7 @@ plt.close()
 print("Saved: 05_price_distribution.png")
 
 
-print("DATASET SUMMARY (use these in your report)")
+print("DATASET SUMMARY")
 
 print(f"  Total transactions  : {len(df):,}")
 print(f"  Unique invoices     : {df['InvoiceNo'].nunique():,}")

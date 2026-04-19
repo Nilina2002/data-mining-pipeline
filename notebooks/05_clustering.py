@@ -277,7 +277,7 @@ rfm.to_csv('../data/processed/customer_segments.csv', index=False)
 print(f"\n Segmented customers saved → ../data/processed/customer_segments.csv")
 
 
-print(" ACADEMIC SUMMARY (use in your report)")
+print(" SUMMARY ")
 
 print(f"  Algorithm        : K-Means (k-means++ initialisation)")
 print(f"  Features used    : Recency, Frequency, Monetary (RFM)")

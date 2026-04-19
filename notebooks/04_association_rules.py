@@ -154,7 +154,7 @@ rules_export.columns = ['Antecedent', 'Consequent',
 rules_export.to_csv('../outputs/association_rules.csv', index=False)
 print(f"\n Rules saved → outputs/association_rules.csv")
 
-print("📚 ACADEMIC SUMMARY (use in your report)")
+print("ACADEMIC SUMMARY")
 
 print(f"  Algorithm          : Apriori (Agrawal & Srikant, 1994)")
 print(f"  Dataset scope      : UK transactions only")
