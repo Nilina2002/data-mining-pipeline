@@ -413,7 +413,7 @@ export default function CustomerPortal() {
                         </div>
                     ) : null}
 
-                    <div style={{ marginBottom: 24 }}>
+                    {/* <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 11, color: "#6b7280", fontFamily: "DM Mono, monospace", marginBottom: 10, letterSpacing: "0.08em" }}>
                             QUICK LOAD - TEST PROFILES
                         </div>
@@ -443,12 +443,12 @@ export default function CustomerPortal() {
                                 </button>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                         <div>
                             <div style={{ fontSize: 11, color: "#6b7280", fontFamily: "DM Mono, monospace", marginBottom: 12, letterSpacing: "0.08em" }}>
-                                RFM INPUT FEATURES
+                                Input Features - RFM
                             </div>
 
                             <RFMSlider
